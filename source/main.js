@@ -1,6 +1,5 @@
-const { Routes } = require('discord.js');
-const { REST } = require('discordjs/rest');
-const process = require('dotenv')
+const { REST, Routes } = require('discord.js');
+
 const { Client, GatewayIntentBits } = require('discord.js')
 const client = new Client();
 const commands = [
@@ -10,7 +9,7 @@ const commands = [
   },
 ];
 
-const rest = new REST({ version: '10' }).setToken("MTE2NzQ5MTY3NDkyNzI4NDI5NQ.GgkBoj.A4_haQBrMpCNs1-P39g8BBTsK71RR85qq3x4Uw");
+const rest = new REST({ version: '10' }).setToken(TOKEN);
 
 try {
   console.log('Started refreshing application (/) commands.');
@@ -35,4 +34,4 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-client.login("MTE2NzQ5MTY3NDkyNzI4NDI5NQ.GgkBoj.A4_haQBrMpCNs1-P39g8BBTsK71RR85qq3x4Uw");
+client.login(TOKEN);
