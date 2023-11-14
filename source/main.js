@@ -1,20 +1,21 @@
 const { REST, Routes } = require('discord.js');
-
 const { Client, GatewayIntentBits } = require('discord.js')
-const client = new Client();
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const config = require("../config.json")
+
 const commands = [
   {
     name: 'ping',
     description: 'Pong!',
-  },
+  }
 ];
 
-const rest = new REST({ version: '10' }).setToken(TOKEN);
+const rest = new REST({ version: '10' }).setToken(config.token);
 
 try {
   console.log('Started refreshing application (/) commands.');
 
-  rest.put(Routes.applicationCommands("1167491674927284295"), { body: commands });
+  rest.put(Routes.applicationCommands(config.client_id), { body: commands });
 
   console.log('Successfully reloaded application (/) commands.');
 } catch (error) {
@@ -34,4 +35,4 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-client.login(TOKEN);
+client.login(config.token);
