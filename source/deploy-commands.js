@@ -37,9 +37,12 @@ for (const folder of commandFolders) {
   }
 }
 
-
+/**
+ * Registering slash commands
+ */
 const rest = new REST().setToken(config.token);
 
+// Deployment of commands
 (async () => {
   try {
     console.log('Started refreshing application (/) commands.');
@@ -54,35 +57,3 @@ const rest = new REST().setToken(config.token);
     console.error(error);
   }
 })
-
-
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-});
-
-client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isChatInputCommand()) return;
-
-  const command = interaction.client.commands.get(interaction.commandName);
-  if (!command) {
-    console.error(`No command ${interaction.commandName} was found!`)
-    return;
-  }
-
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
-    if (interaction.replied || interaction.deferred) {
-      await interaction.followUp({content: 'An error occured when executing this command!', ephemeral: true});
-    } else {
-      await interaction.reply({content: 'An error occured when executing this command!', ephemeral: true});
-    }
-  }
-
-  if (interaction.commandName === 'ping') {
-    await interaction.reply('Pong!');
-  }
-});
-
-client.login(config.token);
