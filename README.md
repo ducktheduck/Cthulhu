@@ -6,6 +6,9 @@
 - Ping command
 > **Usage**: /ping <br>
 > **Description**: Replies with "Pong!"
+> <br>
+> <br>
+![Ping Image](https://i.imgur.com/9qOwiGg.png)
 
 ## Dependencies:
 - [Node.js](https://nodejs.org/en/) ~ (v21.1.0 is currently used in development)
