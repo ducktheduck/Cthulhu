@@ -57,44 +57,25 @@ const rest = new REST().setToken(config.token);
   }
 })
 
+// Registering events
 
-client.on('ready', () => {
+const eventsPath = path.join(__dirname, "events");
+const eventsFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
 
-  console.log(`Logged in as ${client.user.tag}!`);
+for (const file of eventsFiles) {
 
-});
-
-client.on(Events.InteractionCreate, async interaction => {
-
-  if (!interaction.isChatInputCommand()) return;
-
-  const command = interaction.client.commands.get(interaction.commandName);
-  if (!command) {
-
-    console.error(`No command ${interaction.commandName} was found!`)
-    return;
+  const filePath = path.join(eventsPath, file);
+  const event = require(filePath);
+  
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args));
+  
+  } else {
+    client.on(event.name, (...args) => event.execute(...args));
   }
 
-  try {
+}
 
-    await command.execute(interaction);
 
-  } catch (error) {
-
-    console.error(error);
-
-    if (interaction.replied || interaction.deferred) {
-
-      await interaction.followUp({content: 'An error occured when executing this command!', ephemeral: true});
-
-    } else {
-      await interaction.reply({content: 'An error occured when executing this command!', ephemeral: true});
-    }
-  }
-
-  if (interaction.commandName === 'ping') {
-    await interaction.reply('Pong!');
-  }
-});
 
 client.login(config.token);
